@@ -1,0 +1,63 @@
+{% extends 'landing/base.html' %}
+{% block title %}Historia{% endblock %}
+
+{% block content %}
+<style>
+.story-box {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: rgba(0,0,0,0.55);
+  border-left: 4px solid #ff1a1a;
+  border-right: 4px solid #ff1a1a;
+  box-shadow: 0 0 20px rgba(255,0,0,0.4);
+  color: #f0e36f;
+  font-size: 18px;
+  line-height: 1.6;
+  text-align: justify;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 1.5s ease;
+}
+
+.story-title {
+  text-align: center;
+  font-size: 26px;
+  color: #ff4d4d;
+  text-shadow: 0 0 8px #ff0000;
+  margin-bottom: 1rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+<h1 class="title">Historia</h1>
+
+<div class="story-box" id="historiaContainer">
+    <p style="color:white;">Cargando historia...</p>
+</div>
+
+<script type="module">
+    import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
+
+    const cont = document.getElementById("historiaContainer");
+
+    async function cargar() {
+        const snap = await getDocs(collection(window.db, "historia"));
+
+        snap.forEach(doc => {
+            const h = doc.data();
+
+            cont.innerHTML = `
+                <div class="story-title">${h.titulo}</div>
+                <p>${h.contenido}</p>
+            `;
+        });
+    }
+
+    cargar();
+</script>
+
+{% endblock %}
+

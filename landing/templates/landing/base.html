@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}V Magma{% endblock %}</title>
+
+    <style>
+    /* ------------------------------ */
+    /* 🔥 NAVBAR FIJA ESTILO V MAGMA */
+    /* ------------------------------ */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.65);
+      backdrop-filter: blur(6px);
+      border-bottom: 2px solid #ff1a1a;
+      box-shadow: 0 0 15px #ff1a1a;
+      padding: 0.6rem 1rem;
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+    }
+
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      gap: 1.2rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar ul li a {
+      color: #f0e36f;
+      font-weight: bold;
+      text-decoration: none;
+      padding: 10px 18px;
+      border-radius: 6px;
+      transition: 0.3s ease;
+    }
+
+    .navbar ul li a:hover {
+      background-color: #ff4444;
+      box-shadow: 0 0 10px #ff4444;
+    }
+
+    /* ------------------------------ */
+    /* 🔥 FONDO GLOBAL */
+    /* ------------------------------ */
+    body {
+      margin-top: 70px;
+      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                  url("{% static 'landing/images/fondo1.gif' %}");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: #eee;
+      font-family: Arial, sans-serif;
+    }
+
+    /* ------------------------------ */
+    /* 🔥 BOTÓN DE DESCARGA */
+    /* ------------------------------ */
+    .btn-download {
+      background: linear-gradient(45deg, #ff0033, #ff3366);
+      color: rgb(219, 248, 75);
+      padding: 18px 48px;
+      font-size: 20px;
+      font-weight: bold;
+      border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 0 20px rgba(255, 0, 51, 0.6);
+      transition: transform 0.3s ease;
+    }
+
+    .btn-download:hover {
+      transform: scale(1.08);
+    }
+
+    /* ------------------------------ */
+    /* 🔥 FOOTER */
+    /* ------------------------------ */
+    footer {
+      margin-top: 4rem;
+      padding: 2rem 0;
+      text-align: center;
+      background: rgba(0,0,0,0.5);
+      border-top: 2px solid #ff1a1a;
+      box-shadow: 0 0 15px #ff1a1a;
+    }
+
+    footer .iconos img {
+      width: 45px;
+      margin: 0 10px;
+      transition: 0.3s ease;
+    }
+
+    footer .iconos img:hover {
+      transform: scale(1.2);
+      filter: drop-shadow(0 0 8px #ff4444);
+    }
+    </style>
+
+    <!-- Manifest PWA -->
+    <link rel="manifest" href="{% url 'manifest' %}">
+    <meta name="theme-color" content="#000">
+
+    <!-- Icono -->
+    <link rel="icon" href="{% static 'landing/images/eclipse5_logo.png' %}">
+
+    <!-- Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
+        import { getFirestore } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA3x09uMi9ds4MmwR6FfMN0o5CJvfQ5exI",
+            authDomain: "vmagma-59217.firebaseapp.com",
+            projectId: "vmagma-59217",
+            storageBucket: "vmagma-59217.appspot.com",
+            messagingSenderId: "118255384457479961389",
+            appId: "1:118255384457479961389:web:3b4cb733b8e4d98659d38f"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        window.db = getFirestore(app);
+    </script>
+
+</head>
+
+<body>
+
+    <!-- NAV -->
+    <div class="navbar">
+        <ul>
+            <li><a href="{% url 'index' %}">Inicio</a></li>
+            <li><a href="{% url 'galeria' %}">Galería</a></li>
+            <li><a href="{% url 'personajes' %}">Personajes</a></li>
+            <li><a href="{% url 'acerca' %}">Historia</a></li>
+            <li><a href="{% url 'noticias' %}">Noticias</a></li>
+        </ul>
+    </div>
+
+    {% block content %}{% endblock %}
+
+    <!-- DESCARGA -->
+    <div style="text-align:center;margin:3rem 0;">
+        <p class="subtitle">Descarga el juego en tu dispositivo</p>
+
+        <a href="#" target="_blank">
+            <img src="{% static 'landing/icons/play-store3.png' %}" style="height:60px;">
+        </a>
+
+        <a href="#" target="_blank">
+            <img src="{% static 'landing/icons/app-store1.png' %}" style="height:60px;">
+        </a>
+
+        <br><br>
+
+        <a href="{% static 'juego/GamePromo.zip' %}" class="btn-download" download>
+            ¡Descargar el Juego Ahora!
+        </a>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p class="subtitle">Síguenos en redes</p>
+
+        <div class="iconos">
+            <a href="#"><img src="{% static 'landing/icons/facebook.png' %}"></a>
+            <a href="#"><img src="{% static 'landing/icons/twitterpng.png' %}"></a>
+            <a href="#"><img src="{% static 'landing/icons/instagram.png' %}"></a>
+            <a href="#"><img src="{% static 'landing/icons/youtube.png' %}"></a>
+        </div>
+
+        <div style="margin-top:2rem;">
+            <img src="{% static 'landing/images/eclipse5_logo.png' %}" style="height:120px;">
+            <span style="color:#f0e36f;font-weight:bold;">Eclipse 5 Studios</span>
+        </div>
+    </footer>
+
+    <!-- Service Worker: registrarlo en todas las páginas -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register("{% url 'serviceworker' %}")
+            .then(reg => console.log('SW registrado:', reg.scope))
+            .catch(err => console.log('Error SW:', err));
+        }
+    </script>
+
+</body>
+</html>

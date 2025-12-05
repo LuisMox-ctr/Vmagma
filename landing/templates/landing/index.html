@@ -1,0 +1,28 @@
+{% extends 'landing/base.html' %}
+{% load static %}
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+
+<div style="text-align:center; padding-top:50px;">
+    <img src="{% static 'landing/images/portada.png' %}" style="width:60%;border-radius:10px;">
+</div>
+
+<h1 class="title">Bienvenido a V Magma</h1>
+
+<p class="subtitle" style="width:70%;margin:auto;">
+    El videojuego oficial del universo Magma. Explora, lucha y descubre una historia épica.
+</p>
+
+<!-- Registro del PWA -->
+<link rel="manifest" href="{% url 'manifest' %}">
+<meta name="theme-color" content="#1976d2">
+<script>
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register("{% url 'serviceworker' %}")
+    .then(reg => console.log('SW registrado:', reg.scope))
+    .catch(err => console.log('Error SW:', err));
+}
+</script>
+
+{% endblock %}

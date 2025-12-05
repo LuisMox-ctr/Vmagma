@@ -1,0 +1,38 @@
+{% extends 'landing/base.html' %}
+{% block title %}Galería{% endblock %}
+
+{% block content %}
+
+<h1 class="title">Galería</h1>
+
+<div class="imagenes" id="galeriaContainer">
+    <p style="color:white;">Cargando imágenes...</p>
+</div>
+
+<script type="module">
+    import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
+
+    const cont = document.getElementById("galeriaContainer");
+
+    async function cargar() {
+        cont.innerHTML = "";
+        const snap = await getDocs(collection(window.db, "imagenes"));
+
+        if (snap.empty) {
+            cont.innerHTML = "<p>No hay imágenes.</p>";
+            return;
+        }
+
+        snap.forEach(doc => {
+            const d = doc.data();
+            const img = document.createElement("img");
+            img.src = d.imagen_url;
+            cont.appendChild(img);
+        });
+    }
+
+    cargar();
+</script>
+
+{% endblock %}
+

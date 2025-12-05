@@ -1,0 +1,112 @@
+{% extends 'landing/base.html' %}
+{% block title %}Personajes{% endblock %}
+
+{% block content %}
+<style>
+/* CONTENEDOR DE CARDS */
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  margin: 2rem auto;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* CARD BASE */
+.card {
+  background-color: rgba(0,0,0,0.7);
+  border: 2px solid #ff1a1a;
+  border-radius: 12px;
+  width: 260px;
+  box-shadow: 0 0 20px rgba(255,0,0,0.8);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+/* EFECTO AL PASAR EL MOUSE */
+.card:hover {
+  transform: scale(1.12);
+  z-index: 10;
+}
+
+/* IMAGEN */
+.card img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  background-color: #000; /* fondo si hay espacio vacío */
+}
+
+/* CONTENIDO */
+.card-content {
+  padding: 1rem;
+  color: #f0e36f;
+  text-align: center;
+}
+
+.card-content h3 {
+  margin: 0.5rem 0;
+  color: #ff4d4d;
+  text-shadow: 0 0 6px #ff0000;
+}
+
+.card-content p {
+  margin: 0.3rem 0;
+  font-size: 14px;
+}
+
+/* DETALLES OCULTOS */
+.card-details {
+  display: none;
+  margin-top: 1rem;
+  text-align: left;
+  font-size: 13px;
+}
+
+/* MOSTRAR DETALLES EN HOVER */
+.card:hover .card-details {
+  display: block;
+}
+</style>
+<h1 class="title">Personajes</h1>
+
+<div class="cards-container" id="personajesContainer">
+    <p style="color:white;">Cargando personajes...</p>
+</div>
+
+<script type="module">
+    import { collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
+
+    const cont = document.getElementById("personajesContainer");
+
+    async function cargar() {
+        cont.innerHTML = "";
+
+        const q = query(collection(window.db, "personajes"), orderBy("nombre"));
+        const snap = await getDocs(q);
+
+        snap.forEach(doc => {
+            const p = doc.data();
+
+            cont.innerHTML += `
+                <div class="card">
+                    <img src="${p.imagen_url}">
+                    <div class="card-content">
+                        <h3>${p.nombre}</h3>
+                        <p><b>Rol:</b> ${p.rol}</p>
+                        <p><b>Motivación:</b> ${p.motivacion}</p>
+                        <p><b>Estilo:</b> ${p.estilo}</p>
+                        <p>${p.detalles}</p>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    cargar();
+</script>
+
+{% endblock %}
